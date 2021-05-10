@@ -7,6 +7,7 @@ public class Obstacle : MonoBehaviour {
 
     void Update()
     {
-        transform.Translate(-transform.right * GameArea.CurrentFloatSpeed * speed);
+        transform.Translate(-transform.right * GameArea.CurrentFloatSpeed * speed * Time.deltaTime);
+        //transform.Translate(-transform.right * speed * Time.deltaTime);
     }
 }

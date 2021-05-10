@@ -15,4 +15,8 @@ public class FlyAbility : AbilityModuleBase
         base.Init();
         player = FindObjectOfType<Player>();
     }
+
+    override public void EndEffect(){
+        player.StopFly();
+    }
 }

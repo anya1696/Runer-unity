@@ -1,41 +1,51 @@
-﻿using Redbus.Events;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Ability : MonoBehaviour {
     public float duration;
-    float leftDuration = 0;
+
+    public float LeftDuration { get; set; } = 0;
 
     public AbilityModuleBase[] modules;
     public string description;
 
+    bool isActive = false;
+
     void Update()
     {
-        leftDuration -= Time.deltaTime;
-        if (leftDuration < 0 ) {
+        if (!isActive) {
+            return;
+        }
+        LeftDuration -= Time.fixedDeltaTime;
+        if (LeftDuration <= 0 ) {
             EndAbylity();
         }
     }
 
     public void Init(){
-        foreach (AbilityModuleBase module in modules){
+        foreach (AbilityModuleBase module in modules) {
             module.Init();
         }
     }
 
     public void TriggerAbylity()
     {
-        leftDuration = duration;
+        LeftDuration = duration;
         RunEffect();
     }
 
     void EndAbylity()
     {
+        isActive = false;
         EventManager.MainEventBus.Publish(new AbilityEnd(this));
+        foreach (AbilityModuleBase module in modules) {
+            module.EndEffect();
+        }
     }
 
     void RunEffect(){
+        isActive = true;
         EventManager.MainEventBus.Publish(new AbilityStart(this));
-        foreach (AbilityModuleBase module in modules){
+        foreach (AbilityModuleBase module in modules) {
             module.RunEffect();
         }
     }

@@ -11,8 +11,8 @@ public class PlayersControl : MonoBehaviour {
     private Player player;
     float verticalSpeed;
 
-    bool isGrounded = false;
-    bool isJumping = false;
+    bool isGrounded = true;
+    bool isJump = false;
 
     public void Init(){
         player = gameObject.GetComponent<Player>();
@@ -35,37 +35,46 @@ public class PlayersControl : MonoBehaviour {
             return;
         }
         isGrounded = false;
-        isJumping = true;
+        isJump = true;
         verticalSpeed = jumpForce;
-
     }
 
     void CustomJump(){
-        if (!isJumping){
+        if (isGrounded || !isJump){
             return;
         }
-        verticalSpeed -= customGravity * Time.deltaTime;
+        verticalSpeed -= customGravity * Time.deltaTime* GameArea.CurrentFloatSpeed;
         if (verticalSpeed != 0f && !isGrounded){
-            player.transform.Translate(Vector3.up * verticalSpeed * Time.deltaTime);
+            player.transform.Translate(Vector3.up * verticalSpeed * Time.deltaTime * GameArea.CurrentFloatSpeed);
         }
     }
 
-
-    void OnCollisionStay(Collision collision){
-        string tag = collision.gameObject.tag;
+    void OnTriggerEnter(Collider collider){
+        string tag = collider.gameObject.tag;
         if (tag == "Road"){
             isGrounded = true;
-            isJumping = false;
+            isJump = false;
         }
-        if (tag == "Obstacle"){
-
-        }
-        Debug.Log("OnCollisionStay:" + collision.gameObject.name + " | " + collision.gameObject.tag);
-
     }
 
     void OnPressAbility(){
         player.TriggerAbility();
+    }
+
+    public void StartFly(){
+        isGrounded = false;
+        player.transform.position = new Vector3(
+                player.transform.position.x,
+                2,
+                player.transform.position.z);
+        //player.transform.position.y = player.transform.position.y * verticalSpeed;
+    }
+
+    public void StopFly(){
+        player.transform.position = new Vector3(
+                player.transform.position.x,
+                0,
+                player.transform.position.z);
     }
 
     public KeyCode JumpKey {

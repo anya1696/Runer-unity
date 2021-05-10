@@ -3,7 +3,9 @@ using UnityEngine;
 
 public class GameArea : MonoBehaviour {
     public float timeToGenerateObstacles = 2;
+
     float timerToGenerateObstacles;
+    private float fixedDeltaTime;
 
     static GameSpeed CurrentSpeed { get; set; } = GameSpeed.Normal;
 
@@ -23,6 +25,7 @@ public class GameArea : MonoBehaviour {
             return;
         }
         timerToGenerateObstacles -= Time.deltaTime * CurrentFloatSpeed;
+        //timerToGenerateObstacles -= Time.deltaTime;
         if (timerToGenerateObstacles <= 0 ) {
             obstaclesGenerator.GenerateSingleObstacle();
             timerToGenerateObstacles = timeToGenerateObstacles;
@@ -30,28 +33,32 @@ public class GameArea : MonoBehaviour {
 
     }
 
-    void Start()
-    {
-        Init();
-    }
-
     void Init(){
+        fixedDeltaTime = Time.fixedDeltaTime;
         EventManager.MainEventBus.Subscribe<PlayerDefeated>(OnPlayerDefeated);
         EventManager.MainEventBus.Subscribe<ChangeGameSpeed>(OnSideChangeGameSpeed);
-        FindObjectOfType<Player>().Init();
+        EventManager.MainEventBus.Subscribe<AbilityEnd>(OnAbilityEnd);
         timerToGenerateObstacles = timeToGenerateObstacles;
     }
 
-    public void StartGame(){
+    public void StartGame(Player chosenPlayer){
+        Debug.Log("chosenPlayer:" + chosenPlayer.name);
+        Player player = Instantiate(chosenPlayer, transform);
+        player.Init();
+        Init();
         GameOver = false;
+        gameObject.SetActive(true);
     }
 
     public void EndGame(){
         GameOver = true;
+        gameObject.SetActive(false);
     }
 
     void SetGameSpeed(GameSpeed gameSpeed){
         CurrentSpeed = gameSpeed;
+        //Time.timeScale = CurrentFloatSpeed;
+        //Time.fixedDeltaTime = this.fixedDeltaTime;
     }
 
     void OnSideChangeGameSpeed(ChangeGameSpeed e){
@@ -60,6 +67,10 @@ public class GameArea : MonoBehaviour {
 
     void OnPlayerDefeated(PlayerDefeated e){
         EndGame();
+    }
+
+    void OnAbilityEnd(AbilityEnd e){
+        SetGameSpeed(GameSpeed.Normal);
     }
 
     public static float CurrentFloatSpeed {
