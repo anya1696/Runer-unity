@@ -7,11 +7,12 @@ public class StartScreen : ScreenBase
     public Button button;
 
     public override void Init(){
+        base.Init();
         characterChoiceLayout.Init();
-        EventManager.MainEventBus.Subscribe<PlayerChoisen>(OnChosePlayer);
+        EventManager.MainEventBus.Subscribe<PlayerChosen>(OnChosePlayer);
     }
 
-    public void OnChosePlayer(PlayerChoisen e){
+    public void OnChosePlayer(PlayerChosen e){
         button.gameObject.SetActive(true);
     }
 

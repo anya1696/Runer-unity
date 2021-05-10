@@ -330,7 +330,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityRechacgeTime: 3
   ability: {fileID: 3437636696252900361}
-  lifeCount: 3
+  maxLifeCount: 3
   playersControl: {fileID: 1366530645599913365}
   model3d: {fileID: 5812174280041264648}
   energyText: {fileID: 1366530645484368211}
@@ -376,7 +376,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1366530645599913367}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.0149202, y: 1, z: 1}
@@ -674,7 +674,6 @@ GameObject:
   - component: {fileID: 8967323092863734513}
   - component: {fileID: 5870942373790536287}
   - component: {fileID: 5812174280041264648}
-  - component: {fileID: 4130981996073328482}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -743,19 +742,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &4130981996073328482
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6495170264908731025}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &3842578829103413422
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -763,6 +749,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1366530645599913366}
     m_Modifications:
+    - target: {fileID: 1938629536080288953, guid: f386821cb6045b16cb07cb0852175d4d,
+        type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1366530645599913364}
     - target: {fileID: 1938629536080288954, guid: f386821cb6045b16cb07cb0852175d4d,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -1,9 +1,9 @@
 using Redbus.Events;
 
-public class AbilityEnd : EventBase {
+public class AbilityStop : EventBase {
     public Ability Ability { get; set; }
 
-    public AbilityEnd(Ability ability){
+    public AbilityStop(Ability ability){
         Ability = ability;
     }
 

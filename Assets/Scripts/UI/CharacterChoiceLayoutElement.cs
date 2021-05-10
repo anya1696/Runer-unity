@@ -8,7 +8,7 @@ public class CharacterChoiceLayoutElement : MonoBehaviour
    Player player;
 
    public void OnChoise(){
-      EventManager.MainEventBus.Publish(new PlayerChoisen(Player));
+      EventManager.MainEventBus.Publish(new PlayerChosen(Player));
    }
 
    public Player Player{

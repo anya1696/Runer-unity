@@ -40,18 +40,18 @@ public class PlayersControl : MonoBehaviour {
     }
 
     void CustomJump(){
-        if (isGrounded || !isJump){
+        if (isGrounded || !isJump) {
             return;
         }
-        verticalSpeed -= customGravity * Time.deltaTime* GameArea.CurrentFloatSpeed;
-        if (verticalSpeed != 0f && !isGrounded){
+        verticalSpeed -= customGravity * Time.deltaTime * GameArea.CurrentFloatSpeed;
+        if (verticalSpeed != 0f && !isGrounded) {
             player.transform.Translate(Vector3.up * verticalSpeed * Time.deltaTime * GameArea.CurrentFloatSpeed);
         }
     }
 
     void OnTriggerEnter(Collider collider){
         string tag = collider.gameObject.tag;
-        if (tag == "Road"){
+        if (tag == "Road") {
             isGrounded = true;
             isJump = false;
         }
@@ -71,6 +71,7 @@ public class PlayersControl : MonoBehaviour {
     }
 
     public void StopFly(){
+//        isGrounded = true;
         player.transform.position = new Vector3(
                 player.transform.position.x,
                 0,

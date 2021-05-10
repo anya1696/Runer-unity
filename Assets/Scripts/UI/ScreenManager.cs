@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 
 public class ScreenManager : MonoBehaviour {
-    public ScreenBase gameOverScreenPrefab;
-     ScreenBase startGameScreenPrefab;
+    //public GameObject screenParent;
 
-    ScreenBase gameOverScreen;
+    public ScreenBase gameOverScreenPrefab;
+    //ScreenBase startGameScreenPrefab;
+
+    static ScreenBase gameOverScreen;
     public ScreenBase startGameScreen;
 
     public GameArea gameArea;
@@ -13,7 +15,7 @@ public class ScreenManager : MonoBehaviour {
 
     void Start(){
         OpenStartGameScreen();
-        EventManager.MainEventBus.Subscribe<PlayerChoisen>(OnPlayerChose);
+        EventManager.MainEventBus.Subscribe<PlayerChosen>(OnPlayerChose);
     }
 
     public void OpenGameOverScreen(){
@@ -30,7 +32,7 @@ public class ScreenManager : MonoBehaviour {
         startGameScreen.Open();
     }
 
-    public void OnPlayerChose(PlayerChoisen e){
+    public void OnPlayerChose(PlayerChosen e){
         player = e.Player;
     }
 

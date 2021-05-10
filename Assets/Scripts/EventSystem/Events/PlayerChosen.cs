@@ -1,8 +1,8 @@
 using Redbus.Events;
 
-public class PlayerChoisen: EventBase {
+public class PlayerChosen : EventBase {
     public Player Player {get; set;}
-    public PlayerChoisen(Player player){
+    public PlayerChosen(Player player){
         Player = player;
     }
 }

@@ -4,14 +4,9 @@ using UnityEngine;
 
 public class UnbeatableAbility : AbilityModuleBase
 {
-    Player player;
+    public Player player;
 
-    override public void RunEffect(){
+    override public void ApplyEffect(){
         player.IsBeatable = false;
-    }
-
-    override public void Init(){
-        base.Init();
-        player = FindObjectOfType<Player>();
     }
 }

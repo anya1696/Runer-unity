@@ -17,7 +17,7 @@ public class Ability : MonoBehaviour {
         }
         LeftDuration -= Time.fixedDeltaTime;
         if (LeftDuration <= 0 ) {
-            EndAbylity();
+            StopAbility();
         }
     }
 
@@ -30,23 +30,23 @@ public class Ability : MonoBehaviour {
     public void TriggerAbylity()
     {
         LeftDuration = duration;
-        RunEffect();
+        StartAbility();
     }
 
-    void EndAbylity()
+    void StopAbility()
     {
         isActive = false;
-        EventManager.MainEventBus.Publish(new AbilityEnd(this));
+        EventManager.MainEventBus.Publish(new AbilityStop(this));
         foreach (AbilityModuleBase module in modules) {
-            module.EndEffect();
+            module.DisableEffect();
         }
     }
 
-    void RunEffect(){
+    void StartAbility(){
         isActive = true;
         EventManager.MainEventBus.Publish(new AbilityStart(this));
         foreach (AbilityModuleBase module in modules) {
-            module.RunEffect();
+            module.ApplyEffect();
         }
     }
 }

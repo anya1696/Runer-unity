@@ -5,7 +5,7 @@ public class GameArea : MonoBehaviour {
     public float timeToGenerateObstacles = 2;
 
     float timerToGenerateObstacles;
-    private float fixedDeltaTime;
+    //private float fixedDeltaTime;
 
     static GameSpeed CurrentSpeed { get; set; } = GameSpeed.Normal;
 
@@ -14,7 +14,7 @@ public class GameArea : MonoBehaviour {
     static Dictionary<GameSpeed, float> SpeedSettings = new Dictionary<GameSpeed, float>(){
         {GameSpeed.Min, 0.5f},
         {GameSpeed.Normal , 1f},
-        {GameSpeed.Max, 2f}
+        {GameSpeed.Max, 2.0f}
     };
 
     public ObstaclesGenerator obstaclesGenerator;
@@ -34,15 +34,14 @@ public class GameArea : MonoBehaviour {
     }
 
     void Init(){
-        fixedDeltaTime = Time.fixedDeltaTime;
+        //fixedDeltaTime = Time.fixedDeltaTime;
         EventManager.MainEventBus.Subscribe<PlayerDefeated>(OnPlayerDefeated);
         EventManager.MainEventBus.Subscribe<ChangeGameSpeed>(OnSideChangeGameSpeed);
-        EventManager.MainEventBus.Subscribe<AbilityEnd>(OnAbilityEnd);
+        EventManager.MainEventBus.Subscribe<AbilityStop>(OnAbilityEnd);
         timerToGenerateObstacles = timeToGenerateObstacles;
     }
 
     public void StartGame(Player chosenPlayer){
-        Debug.Log("chosenPlayer:" + chosenPlayer.name);
         Player player = Instantiate(chosenPlayer, transform);
         player.Init();
         Init();
@@ -53,6 +52,7 @@ public class GameArea : MonoBehaviour {
     public void EndGame(){
         GameOver = true;
         gameObject.SetActive(false);
+        FindObjectOfType<ScreenManager>().OpenGameOverScreen();
     }
 
     void SetGameSpeed(GameSpeed gameSpeed){
@@ -69,7 +69,7 @@ public class GameArea : MonoBehaviour {
         EndGame();
     }
 
-    void OnAbilityEnd(AbilityEnd e){
+    void OnAbilityEnd(AbilityStop e){
         SetGameSpeed(GameSpeed.Normal);
     }
 

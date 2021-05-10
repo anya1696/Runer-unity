@@ -9,7 +9,7 @@ public class ObstaclesGenerator : MonoBehaviour
     }
 
     public void GenerateSingleObstacle(){
-        Obstacle obstacle = Instantiate(obstaclePrefab);
-        obstacle.transform.SetParent(obstacleParent);
+//        Obstacle obstacle = Instantiate(obstaclePrefab);
+//        obstacle.transform.SetParent(obstacleParent);
     }
 }

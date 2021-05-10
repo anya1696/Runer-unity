@@ -8,7 +8,8 @@ public class Player : MonoBehaviour {
     float TimeToCollDown { get; set; } = 0;
 
     public Ability ability;
-    public int lifeCount = 3;
+    public int maxLifeCount = 3;
+    int currentLifeCount;
     public PlayersControl playersControl;
     public MeshRenderer model3d;
     public Text energyText;
@@ -19,18 +20,19 @@ public class Player : MonoBehaviour {
 
     public bool IsBeatable { get; set; } = true;
 
-    void Start()
-    {
-        Init();
-    }
-
     public void Init(){
+        Debug.Log("plaer Init");
+//        var tokens[] = new [] {
+//            EventManager.MainEventBus.Subscribe<AbilityStart>(OnAbilityStart),
+            EventManager.MainEventBus.Subscribe<AbilityStop>(OnAbilityEnd);
+//        };
         EventManager.MainEventBus.Subscribe<AbilityStart>(OnAbilityStart);
-        EventManager.MainEventBus.Subscribe<AbilityEnd>(OnAbilityEnd);
+
         playersControl.Init();
         ability.Init();
         TimeToCollDown = abilityRechacgeTime;
-        lifeLeftText.text = "Lifes:" + lifeCount;
+        currentLifeCount = maxLifeCount;
+        lifeLeftText.text = "Lifes:" + currentLifeCount;
         energyText.text = "Left: " + Math.Truncate(TimeToCollDown);
     }
 
@@ -58,22 +60,23 @@ public class Player : MonoBehaviour {
     }
 
     public void TriggerAbility(){
+        Debug.Log("TriggerAbility" + isAbilityActivated);
         if (isAbilityActivated) {
             return;
         }
         isAbilityActivated = true;
         ability.TriggerAbylity();
-        Debug.Log("Activate ability");
-    }
+     }
 
     void OnAbilityStart(AbilityStart e){
         isAbilityActivated = true;
     }
 
-    public void OnAbilityEnd(AbilityEnd e){
+    public void OnAbilityEnd(AbilityStop e){
         Debug.Log("Player, OnAbilityEnd");
         isAbilityActivated = false;
         TimeToCollDown = abilityRechacgeTime;
+        IsBeatable = true;
     }
 
     public void StartFly(){
@@ -85,15 +88,18 @@ public class Player : MonoBehaviour {
     }
 
     void Deafited(){
-
+        //gameObject.SetActive(false);
+        Debug.Log("currentLifeCount" + currentLifeCount);
+        EventManager.MainEventBus.Publish(new PlayerDefeated());
+        //FindObjectOfType<ScreenManager>().OpenGameOverScreen();
     }
 
     void OnTriggerEnter(Collider collider){
         if (collider.tag == "Obstacle") {
             if (IsBeatable) {
-                lifeCount -= 1;
-                lifeLeftText.text = "Lifes:" + lifeCount;
-                if (lifeCount <= 0) {
+                currentLifeCount -= 1;
+                lifeLeftText.text = "Lifes:" + currentLifeCount;
+                if (currentLifeCount <= 0) {
                     Deafited();
                 }
             }

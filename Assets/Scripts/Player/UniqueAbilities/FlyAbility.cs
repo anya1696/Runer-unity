@@ -4,19 +4,14 @@ using UnityEngine;
 
 public class FlyAbility : AbilityModuleBase
 {
-    Player player;
+    public Player player;
 
-    override public void RunEffect(){
-        base.RunEffect();
+    override public void ApplyEffect(){
+        base.ApplyEffect();
         player.StartFly();
     }
 
-    override public void Init(){
-        base.Init();
-        player = FindObjectOfType<Player>();
-    }
-
-    override public void EndEffect(){
+    override public void DisableEffect(){
         player.StopFly();
     }
 }
