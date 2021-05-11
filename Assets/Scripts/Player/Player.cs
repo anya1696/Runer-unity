@@ -1,15 +1,13 @@
 ﻿using System;
+using Redbus;
+using Redbus.Extensions;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour {
     public float abilityRechacgeTime = 15;
-
-    float TimeToCollDown { get; set; } = 0;
-
     public Ability ability;
     public int maxLifeCount = 3;
-    int currentLifeCount;
     public PlayersControl playersControl;
     public MeshRenderer model3d;
     public Text energyText;
@@ -17,16 +15,18 @@ public class Player : MonoBehaviour {
     public string desctiption;
 
     bool isAbilityActivated = false;
+    int currentLifeCount;
+    float TimeToCollDown { get; set; } = 0;
 
     public bool IsBeatable { get; set; } = true;
 
+    SubscriptionToken[] tokens;
+
     public void Init(){
-        Debug.Log("plaer Init");
-//        var tokens[] = new [] {
-//            EventManager.MainEventBus.Subscribe<AbilityStart>(OnAbilityStart),
-            EventManager.MainEventBus.Subscribe<AbilityStop>(OnAbilityEnd);
-//        };
-        EventManager.MainEventBus.Subscribe<AbilityStart>(OnAbilityStart);
+        tokens = new [] {
+            EventManager.MainEventBus.Subscribe<AbilityStart>(OnAbilityStart),
+            EventManager.MainEventBus.Subscribe<AbilityStop>(OnAbilityEnd)
+        };
 
         playersControl.Init();
         ability.Init();
@@ -60,7 +60,6 @@ public class Player : MonoBehaviour {
     }
 
     public void TriggerAbility(){
-        Debug.Log("TriggerAbility" + isAbilityActivated);
         if (isAbilityActivated) {
             return;
         }
@@ -73,7 +72,6 @@ public class Player : MonoBehaviour {
     }
 
     public void OnAbilityEnd(AbilityStop e){
-        Debug.Log("Player, OnAbilityEnd");
         isAbilityActivated = false;
         TimeToCollDown = abilityRechacgeTime;
         IsBeatable = true;
@@ -88,10 +86,11 @@ public class Player : MonoBehaviour {
     }
 
     void Deafited(){
-        //gameObject.SetActive(false);
-        Debug.Log("currentLifeCount" + currentLifeCount);
         EventManager.MainEventBus.Publish(new PlayerDefeated());
-        //FindObjectOfType<ScreenManager>().OpenGameOverScreen();
+        foreach (SubscriptionToken token in tokens){
+            token.Unsubscribe(EventManager.MainEventBus);
+        }
+        Destroy(gameObject);
     }
 
     void OnTriggerEnter(Collider collider){

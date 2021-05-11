@@ -1,15 +1,17 @@
 ﻿using System.Collections.Generic;
+using Redbus;
+using Redbus.Extensions;
 using UnityEngine;
 
 public class GameArea : MonoBehaviour {
     public float timeToGenerateObstacles = 2;
 
-    float timerToGenerateObstacles;
-    //private float fixedDeltaTime;
-
     static GameSpeed CurrentSpeed { get; set; } = GameSpeed.Normal;
 
+    bool isInited = false;
     bool GameOver { get; set; } = false;
+    SubscriptionToken[] tokens;
+
     //TODO возможно вынести
     static Dictionary<GameSpeed, float> SpeedSettings = new Dictionary<GameSpeed, float>(){
         {GameSpeed.Min, 0.5f},
@@ -19,26 +21,15 @@ public class GameArea : MonoBehaviour {
 
     public ObstaclesGenerator obstaclesGenerator;
 
-    void Update()
-    {
-        if (GameOver){
+    void Init(){
+        if (isInited) {
             return;
         }
-        timerToGenerateObstacles -= Time.deltaTime * CurrentFloatSpeed;
-        //timerToGenerateObstacles -= Time.deltaTime;
-        if (timerToGenerateObstacles <= 0 ) {
-            obstaclesGenerator.GenerateSingleObstacle();
-            timerToGenerateObstacles = timeToGenerateObstacles;
-        }
-
-    }
-
-    void Init(){
-        //fixedDeltaTime = Time.fixedDeltaTime;
-        EventManager.MainEventBus.Subscribe<PlayerDefeated>(OnPlayerDefeated);
-        EventManager.MainEventBus.Subscribe<ChangeGameSpeed>(OnSideChangeGameSpeed);
-        EventManager.MainEventBus.Subscribe<AbilityStop>(OnAbilityEnd);
-        timerToGenerateObstacles = timeToGenerateObstacles;
+        tokens = new [] {
+            EventManager.MainEventBus.Subscribe<PlayerDefeated>(OnPlayerDefeated),
+            EventManager.MainEventBus.Subscribe<ChangeGameSpeed>(OnSideChangeGameSpeed),
+            EventManager.MainEventBus.Subscribe<AbilityStop>(OnAbilityEnd)
+        };
     }
 
     public void StartGame(Player chosenPlayer){
@@ -47,18 +38,21 @@ public class GameArea : MonoBehaviour {
         Init();
         GameOver = false;
         gameObject.SetActive(true);
+        obstaclesGenerator.StartGame(timeToGenerateObstacles);
     }
 
     public void EndGame(){
         GameOver = true;
         gameObject.SetActive(false);
+        obstaclesGenerator.EndGame();
         FindObjectOfType<ScreenManager>().OpenGameOverScreen();
+        foreach (SubscriptionToken token in tokens) {
+            token.Unsubscribe(EventManager.MainEventBus);
+        }
     }
 
     void SetGameSpeed(GameSpeed gameSpeed){
         CurrentSpeed = gameSpeed;
-        //Time.timeScale = CurrentFloatSpeed;
-        //Time.fixedDeltaTime = this.fixedDeltaTime;
     }
 
     void OnSideChangeGameSpeed(ChangeGameSpeed e){
