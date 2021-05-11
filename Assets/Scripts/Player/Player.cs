@@ -46,9 +46,10 @@ public class Player : MonoBehaviour {
     }
 
     private void AbilityCollDownTimer(){
-        if (TimeToCollDown <= 0) {
+        if (TimeToCollDown == 0  & !isAbilityActivated) {
             return;
         }
+        
         if (isAbilityActivated) {
             energyText.text = "LeftA: " + Math.Truncate(ability.LeftDuration);
         } else {
