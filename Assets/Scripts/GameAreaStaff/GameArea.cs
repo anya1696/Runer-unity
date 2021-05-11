@@ -14,7 +14,6 @@ public class GameArea : MonoBehaviour {
     Camera firstPersonCamera;
     SubscriptionToken[] tokens;
 
-    //TODO возможно вынести
     static Dictionary<GameSpeed, float> SpeedSettings = new Dictionary<GameSpeed, float>(){
         {GameSpeed.Min, 0.5f},
         {GameSpeed.Normal , 1f},
@@ -37,7 +36,7 @@ public class GameArea : MonoBehaviour {
     public void StartGame(Player chosenPlayer){
         Player player = Instantiate(chosenPlayer, transform);
         player.Init();
-        firstPersonCamera = player.Camera;
+        firstPersonCamera = player.FirstViewCamera;
         Init();
         GameOver = false;
         gameObject.SetActive(true);

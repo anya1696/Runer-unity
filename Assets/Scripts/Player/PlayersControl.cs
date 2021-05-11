@@ -6,13 +6,16 @@ public class PlayersControl : MonoBehaviour {
 
     public float jumpForce = 1f;
     public float customGravity = 1f;
-    Vector3 jumpVector = new Vector3(0f, 1f, 0f);
 
     private Player player;
     float verticalSpeed;
 
     bool isGrounded = true;
     bool isJump = false;
+
+    bool isTakinfOff = false;
+    bool isFallind = false;
+    float flyModVerticalSpeed;
 
     public void Init(){
         player = gameObject.GetComponent<Player>();
@@ -28,6 +31,9 @@ public class PlayersControl : MonoBehaviour {
         if (Input.GetKeyDown(AbilityKey)) {
             OnPressAbility();
         }
+
+        TakingOff();
+        Falling();
     }
 
     void OnPressJump(){
@@ -44,10 +50,33 @@ public class PlayersControl : MonoBehaviour {
             return;
         }
         verticalSpeed -= customGravity * Time.deltaTime * GameArea.CurrentFloatSpeed;
-        Debug.Log(verticalSpeed);
         if (verticalSpeed != 0f && !isGrounded) {
             player.transform.Translate(Vector3.up * verticalSpeed * Time.deltaTime * GameArea.CurrentFloatSpeed);
         }
+    }
+
+    void TakingOff(){
+        if (!isTakinfOff) {
+            return;
+        }
+        flyModVerticalSpeed -= customGravity * Time.deltaTime * GameArea.CurrentFloatSpeed;
+        if (flyModVerticalSpeed != 0f && !isGrounded) {
+            player.transform.Translate(Vector3.up * flyModVerticalSpeed * Time.deltaTime * GameArea.CurrentFloatSpeed);
+        }
+        if (flyModVerticalSpeed <= 0){
+            isTakinfOff = false;
+        }
+    }
+
+    void Falling(){
+        if (!isFallind) {
+            return;
+        }
+        flyModVerticalSpeed -= customGravity * Time.deltaTime * GameArea.CurrentFloatSpeed;
+        if (flyModVerticalSpeed != 0f && !isGrounded) {
+            player.transform.Translate(Vector3.up * flyModVerticalSpeed * Time.deltaTime * GameArea.CurrentFloatSpeed);
+        }
+
     }
 
     void OnTriggerEnter(Collider collider){
@@ -55,6 +84,7 @@ public class PlayersControl : MonoBehaviour {
         if (tag == "Road") {
             isGrounded = true;
             isJump = false;
+            isFallind = false;
         }
     }
 
@@ -64,17 +94,12 @@ public class PlayersControl : MonoBehaviour {
 
     public void StartFly(){
         isGrounded = false;
-        player.transform.position = new Vector3(
-                player.transform.position.x,
-                2,
-                player.transform.position.z);
+        isTakinfOff = true;
+        flyModVerticalSpeed = jumpForce;
     }
 
     public void StopFly(){
-        player.transform.position = new Vector3(
-                player.transform.position.x,
-                0,
-                player.transform.position.z);
+        isFallind = true;
     }
 
     public KeyCode JumpKey {

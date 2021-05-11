@@ -14,7 +14,7 @@ public class Player : MonoBehaviour {
     public Text lifeLeftText;
     public Text ObstacleText;
     public string desctiption;
-    public Camera camera;
+    public Camera firstViewCamera;
 
     bool isAbilityActivated = false;
     int currentLifeCount;
@@ -121,8 +121,8 @@ public class Player : MonoBehaviour {
         set => desctiption = value;
     }
 
-    public Camera Camera {
-        get => camera;
-        set => camera = value;
+    public Camera FirstViewCamera {
+        get => firstViewCamera;
+        set => firstViewCamera = value;
     }
 }

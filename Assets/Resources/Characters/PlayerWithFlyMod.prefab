@@ -1,5 +1,19 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!136 &7410930498183979201
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 343551887529090447}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.5016043
+  m_Height: 1.0139444
+  m_Direction: 1
+  m_Center: {x: -2.7533405, y: 0.0011537075, z: 0}
 --- !u!1 &5354269857542300790
 GameObject:
   m_ObjectHideFlags: 0
@@ -79,20 +93,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!136 &7410930498183979201
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 343551887529090447}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.5016043
-  m_Height: 1.0139444
-  m_Direction: 1
-  m_Center: {x: -2.7533405, y: 0.0011537075, z: 0}
 --- !u!1001 &4377455026135275252
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -100,6 +100,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 343551887529090446}
     m_Modifications:
+    - target: {fileID: -1687838699118794058, guid: 41b84f32f429b7e77ae5d9724f5f4ff6,
+        type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 343551887529090444}
     - target: {fileID: 98830562382140921, guid: 41b84f32f429b7e77ae5d9724f5f4ff6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -191,6 +196,11 @@ PrefabInstance:
       propertyPath: model3d
       value: 
       objectReference: {fileID: 945115733322664518}
+    - target: {fileID: 5958684432225911724, guid: de7fc508c9edc4d798b5554f3f8a1540,
+        type: 3}
+      propertyPath: desctiption
+      value: "\u041B\u0435\u0442\u0430\u0435\u0442"
+      objectReference: {fileID: 0}
     - target: {fileID: 5958684432225911726, guid: de7fc508c9edc4d798b5554f3f8a1540,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -266,3 +276,15 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 6230155541145968160}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &343551887529090444 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5958684432225911724, guid: de7fc508c9edc4d798b5554f3f8a1540,
+    type: 3}
+  m_PrefabInstance: {fileID: 6230155541145968160}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 343551887529090447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51ed33a9c031ce6fe874d4f7ddd024ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -18,7 +18,6 @@ public class CharacterChoiceLayoutElement : MonoBehaviour
       set{
          player = value;
          model.GetComponent<MeshFilter>().mesh = Player.model3d.GetComponent<MeshFilter>().sharedMesh;
-         //model = Player.model3d;
          desctiprion.text = Player.Description;
       }
    }

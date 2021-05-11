@@ -607,7 +607,7 @@ MonoBehaviour:
   lifeLeftText: {fileID: 5958684432133513366}
   ObstacleText: {fileID: 7010713513454304730}
   desctiption: "\u0423\u043D\u0438\u0447\u0442\u043E\u0436\u0430\u0435\u0442 \u043F\u0440\u0435\u043F\u044F\u0442\u0441\u0442\u0432\u0438\u044F"
-  camera: {fileID: 5958684433554719080}
+  firstViewCamera: {fileID: 5958684433554719080}
 --- !u!114 &5958684432225911725
 MonoBehaviour:
   m_ObjectHideFlags: 0
