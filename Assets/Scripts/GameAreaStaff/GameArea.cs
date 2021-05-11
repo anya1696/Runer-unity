@@ -5,11 +5,13 @@ using UnityEngine;
 
 public class GameArea : MonoBehaviour {
     public float timeToGenerateObstacles = 2;
-
+    public OvercomeObstacleCounter overcomeObstacleCounter;
+    public Camera thridViewCamera;
     static GameSpeed CurrentSpeed { get; set; } = GameSpeed.Normal;
 
     bool isInited = false;
     bool GameOver { get; set; } = false;
+    Camera firstPersonCamera;
     SubscriptionToken[] tokens;
 
     //TODO возможно вынести
@@ -35,10 +37,13 @@ public class GameArea : MonoBehaviour {
     public void StartGame(Player chosenPlayer){
         Player player = Instantiate(chosenPlayer, transform);
         player.Init();
+        firstPersonCamera = player.Camera;
         Init();
         GameOver = false;
         gameObject.SetActive(true);
         obstaclesGenerator.StartGame(timeToGenerateObstacles);
+        overcomeObstacleCounter.StartGame();
+        ShowFirstPersonView();
     }
 
     public void EndGame(){
@@ -49,6 +54,7 @@ public class GameArea : MonoBehaviour {
         foreach (SubscriptionToken token in tokens) {
             token.Unsubscribe(EventManager.MainEventBus);
         }
+        ShowThridView();
     }
 
     void SetGameSpeed(GameSpeed gameSpeed){
@@ -67,9 +73,21 @@ public class GameArea : MonoBehaviour {
         SetGameSpeed(GameSpeed.Normal);
     }
 
+    public void AddObstacleScore(){
+        overcomeObstacleCounter.AddScore();
+    }
+
+    public void ShowThridView() {
+        firstPersonCamera.enabled = false;
+        thridViewCamera.enabled = true;
+    }
+
+    public void ShowFirstPersonView() {
+        firstPersonCamera.enabled = true;
+        thridViewCamera.enabled = false;
+    }
+
     public static float CurrentFloatSpeed {
         get=> SpeedSettings[CurrentSpeed];
     }
-
-
 }

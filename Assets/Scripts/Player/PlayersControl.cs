@@ -44,6 +44,7 @@ public class PlayersControl : MonoBehaviour {
             return;
         }
         verticalSpeed -= customGravity * Time.deltaTime * GameArea.CurrentFloatSpeed;
+        Debug.Log(verticalSpeed);
         if (verticalSpeed != 0f && !isGrounded) {
             player.transform.Translate(Vector3.up * verticalSpeed * Time.deltaTime * GameArea.CurrentFloatSpeed);
         }
@@ -67,11 +68,9 @@ public class PlayersControl : MonoBehaviour {
                 player.transform.position.x,
                 2,
                 player.transform.position.z);
-        //player.transform.position.y = player.transform.position.y * verticalSpeed;
     }
 
     public void StopFly(){
-//        isGrounded = true;
         player.transform.position = new Vector3(
                 player.transform.position.x,
                 0,

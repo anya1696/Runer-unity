@@ -12,10 +12,13 @@ public class Player : MonoBehaviour {
     public MeshRenderer model3d;
     public Text energyText;
     public Text lifeLeftText;
+    public Text ObstacleText;
     public string desctiption;
+    public Camera camera;
 
     bool isAbilityActivated = false;
     int currentLifeCount;
+
     float TimeToCollDown { get; set; } = 0;
 
     public bool IsBeatable { get; set; } = true;
@@ -25,7 +28,8 @@ public class Player : MonoBehaviour {
     public void Init(){
         tokens = new [] {
             EventManager.MainEventBus.Subscribe<AbilityStart>(OnAbilityStart),
-            EventManager.MainEventBus.Subscribe<AbilityStop>(OnAbilityEnd)
+            EventManager.MainEventBus.Subscribe<AbilityStop>(OnAbilityEnd),
+            EventManager.MainEventBus.Subscribe<OvercomeObstacle>(OnOvercomeObstacle)
         };
 
         playersControl.Init();
@@ -36,7 +40,7 @@ public class Player : MonoBehaviour {
         energyText.text = "Left: " + Math.Truncate(TimeToCollDown);
     }
 
-    void FixedUpdate()
+    void Update()
     {
         AbilityCollDownTimer();
     }
@@ -56,7 +60,6 @@ public class Player : MonoBehaviour {
                 energyText.text = "Left: " + Math.Truncate(TimeToCollDown);
             }
         }
-
     }
 
     public void TriggerAbility(){
@@ -65,7 +68,7 @@ public class Player : MonoBehaviour {
         }
         isAbilityActivated = true;
         ability.TriggerAbylity();
-     }
+    }
 
     void OnAbilityStart(AbilityStart e){
         isAbilityActivated = true;
@@ -75,6 +78,10 @@ public class Player : MonoBehaviour {
         isAbilityActivated = false;
         TimeToCollDown = abilityRechacgeTime;
         IsBeatable = true;
+    }
+
+    public void OnOvercomeObstacle(OvercomeObstacle e){
+        ObstacleText.text = "Obsctacle:" + e.Value;
     }
 
     public void StartFly(){
@@ -87,7 +94,7 @@ public class Player : MonoBehaviour {
 
     void Deafited(){
         EventManager.MainEventBus.Publish(new PlayerDefeated());
-        foreach (SubscriptionToken token in tokens){
+        foreach (SubscriptionToken token in tokens) {
             token.Unsubscribe(EventManager.MainEventBus);
         }
         Destroy(gameObject);
@@ -95,12 +102,16 @@ public class Player : MonoBehaviour {
 
     void OnTriggerEnter(Collider collider){
         if (collider.tag == "Obstacle") {
+            collider.GetComponent<Obstacle>().IsBeaten = true;
             if (IsBeatable) {
                 currentLifeCount -= 1;
                 lifeLeftText.text = "Lifes:" + currentLifeCount;
                 if (currentLifeCount <= 0) {
                     Deafited();
                 }
+            } else {
+                FindObjectOfType<GameArea>().AddObstacleScore();
+                Destroy(collider.gameObject);
             }
         }
     }
@@ -108,5 +119,10 @@ public class Player : MonoBehaviour {
     public string Description {
         get => desctiption;
         set => desctiption = value;
+    }
+
+    public Camera Camera {
+        get => camera;
+        set => camera = value;
     }
 }

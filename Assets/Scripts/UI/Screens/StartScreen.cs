@@ -28,5 +28,4 @@ public class StartScreen : ScreenBase
         token.Unsubscribe(EventManager.MainEventBus);
         base.Close();
     }
-
 }

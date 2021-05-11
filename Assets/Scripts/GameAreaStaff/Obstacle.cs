@@ -3,10 +3,10 @@
 public class Obstacle : MonoBehaviour {
     public float speed = 0.5f;
 
+    public bool IsBeaten { get; set; }
+
     void Update()
     {
-        //Debug.Log("GameArea.CurrentFloatSpeed:" + GameArea.CurrentFloatSpeed);
         transform.Translate(-transform.right * GameArea.CurrentFloatSpeed * speed * Time.deltaTime);
-        //transform.Translate(-transform.right * speed * Time.deltaTime);
     }
 }
